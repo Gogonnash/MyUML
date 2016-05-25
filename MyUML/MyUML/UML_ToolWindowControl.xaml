@@ -11,7 +11,7 @@
     <Grid>
         <Menu x:Name="menu" Height="22" VerticalAlignment="Top">
             <MenuItem Header="Datei">
-                <MenuItem Header="Speichern" HorizontalAlignment="Left"  InputGestureText="Strg+S"/>
+                <MenuItem Header="Speichern" Click="button1_Click" HorizontalAlignment="Left"  InputGestureText="Strg+S"/>
                 <MenuItem Header="Speichern unter..." HorizontalAlignment="Left" InputGestureText="Strg+Umschalt+S"/>
             </MenuItem>
             <MenuItem Header="UML">
