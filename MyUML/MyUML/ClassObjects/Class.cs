@@ -15,7 +15,7 @@ namespace MyUML.ClassObjects
         private String className;
 
 
-
+        
         public String ClassName
         {
             set
