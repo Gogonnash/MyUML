@@ -17,11 +17,14 @@ using Microsoft.VisualStudio.Shell;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
+using MyUML.ClassObjects;
 
 namespace MyUML.ViewModel
 {
     class UMLViewModel
     {
+        public ClassCollection classCol;
+
         public RelayCommand saveCommand;
         public RelayCommand loadCommand;
 
