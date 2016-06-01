@@ -72,17 +72,30 @@ namespace MyUML.ViewModel
             {
                 // Klassennamen auflisten
                 output = output + c.Identifier + "\n";
-                output = output + "Methoden:\n";
 
-                var methods = c.ChildNodes().OfType<MethodDeclarationSyntax>();
-                // Methoden auflisten
-                foreach (var m in methods)
-                {
-                    output = output + m.Identifier + "\n";
-                }
-
-                // Leerzeile nach den Methoden
+                // Atribute auflisten
+                output = output + "Attribute:\n";
+                var attributes = c.ChildNodes().OfType<FieldDeclarationSyntax>();
+                if (attributes.Count<FieldDeclarationSyntax>() == 0)
+                    output = output + " -- keine Attribute --\n";
+                else
+                    foreach (var a in attributes)
+                    {
+                        output = output + a.ToString() + "\n";
+                    }
                 output = output + "\n";
+
+                // Methoden auflisten
+                output = output + "Methoden:\n";
+                var methods = c.ChildNodes().OfType<MethodDeclarationSyntax>();
+                if (methods.Count<MethodDeclarationSyntax>() == 0)
+                    output = output + " -- keine Methoden --\n";
+                else
+                    foreach (var m in methods)
+                    {
+                        output = output + m.Identifier + "\n";
+                    }
+                output = output + " ____________\n\n";
 
             }
 
