@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace MyUML.ClassObjects
 {
     [Serializable]
-    class ClassCollection: Collection<Class>
+    class ClassCollection: Collection<MyClass>
     {
         public ClassCollection()
         {

@@ -52,8 +52,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ClassObjects\Class.cs" />
+    <Compile Include="ClassObjects\MyAttribute.cs" />
+    <Compile Include="ClassObjects\MyClass.cs" />
     <Compile Include="ClassObjects\ClassCollection.cs" />
+    <Compile Include="ClassObjects\MyMethod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Command\RelayCommand.cs" />
     <Compile Include="ViewModel\UMLViewModel.cs" />
