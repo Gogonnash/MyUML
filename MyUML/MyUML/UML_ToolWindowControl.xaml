@@ -28,6 +28,22 @@
                 <MenuItem Header="Code generieren" InputGestureText="Strg+G" Command="{Binding GenerateCodeCommand, Mode=OneWay, Source={StaticResource myView}}" HorizontalAlignment="Left"/>
             </MenuItem>
         </Menu>
-        <Canvas HorizontalAlignment="Left" Height="278" Margin="0,22,0,0" VerticalAlignment="Top" Width="300"/>
+        <Canvas HorizontalAlignment="Left" Height="278" Margin="0,22,0,0" VerticalAlignment="Top" Width="300">
+            <ItemsControl>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <Rectangle Width="20" Height="20">
+                            </Rectangle>
+                            <TextBlock Text="Klasse"/>
+                            <TextBlock Text="{Binding Path=ClassName}"/>
+                            
+                        </StackPanel>
+                            
+                    </DataTemplate>
+                    
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Canvas>
     </Grid>
 </UserControl>

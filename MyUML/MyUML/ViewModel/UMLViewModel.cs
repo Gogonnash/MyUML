@@ -23,7 +23,7 @@ namespace MyUML.ViewModel
 {
     class UMLViewModel
     {
-        public ClassCollection classCol;
+        //public ClassCollection classCol;
 
         public RelayCommand saveCommand;
         public RelayCommand loadCommand;
@@ -45,6 +45,10 @@ namespace MyUML.ViewModel
             loadCommand = new RelayCommand(Load, ReturnTrue);
             generateUMLCommand = new RelayCommand(GenerateUML, ReturnTrue);
             generateCodeCommand = new RelayCommand(GenerateCode, ReturnTrue);
+            //classCol = new ClassCollection();
+
+            //Class c = new Class();
+            //classCol.Add(c);
         }
 
         private void GenerateCode()
