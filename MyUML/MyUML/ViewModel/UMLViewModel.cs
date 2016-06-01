@@ -59,11 +59,24 @@ namespace MyUML.ViewModel
             var nameSpace = children.OfType<NamespaceDeclarationSyntax>().SingleOrDefault();
             var classes = nameSpace.ChildNodes().OfType<ClassDeclarationSyntax>();
 
-            String output = "";
+            String output = "Klassen:\n\n";
 
-            foreach (var child in classes)
+            foreach (var c in classes)
             {
-                output = output + child.ToString() + " Typ:" + child.GetType().ToString() + "\n\n";
+                // Klassennamen auflisten
+                output = output + c.Identifier + "\n";
+                output = output + "Methoden:\n";
+
+                var methods = c.ChildNodes().OfType<MethodDeclarationSyntax>();
+                // Methoden auflisten
+                foreach (var m in methods)
+                {
+                    output = output + m.Identifier + "\n";
+                }
+
+                // Leerzeile nach den Methoden
+                output = output + "\n";
+
             }
 
             MessageBox.Show(
