@@ -7,21 +7,25 @@
              Foreground="{DynamicResource VsBrush.WindowText}"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
+             xmlns:view="clr-namespace:MyUML.ViewModel"
              Name="MyToolWindow">
+    <UserControl.Resources>
+        <view:UMLViewModel x:Key="myView"/>
+    </UserControl.Resources>
     <Grid>
         <Menu x:Name="menu" Height="22" VerticalAlignment="Top">
             <MenuItem Header="Datei">
-                <MenuItem Header="Speichern" Click="button1_Click" HorizontalAlignment="Left"  InputGestureText="Strg+S"/>
+                <MenuItem Header="Speichern"  InputGestureText="Strg+S" Command="{Binding SaveCommand, Mode=OneWay, Source={StaticResource myView}}" HorizontalAlignment="Left" />
                 <MenuItem Header="Speichern unter..." HorizontalAlignment="Left" InputGestureText="Strg+Umschalt+S"/>
             </MenuItem>
             <MenuItem Header="UML">
-                <MenuItem Header="UML importieren" HorizontalAlignment="Left"/>
+                <MenuItem Header="UML importieren" InputGestureText="Strg+I" Command="{Binding LoadCommand, Mode=OneWay, Source={StaticResource myView}}" HorizontalAlignment="Left"/>
                 <MenuItem Header="UML exportieren" HorizontalAlignment="Left"/>
                 <Separator/>
-                <MenuItem Header="UML generieren" HorizontalAlignment="Left"/>
+                <MenuItem Header="UML generieren"  InputGestureText="Strg+U" Command="{Binding GenerateUMLCommand, Mode=OneWay, Source={StaticResource myView}}" HorizontalAlignment="Left"/>
             </MenuItem>
             <MenuItem Header="Code">
-                <MenuItem Header="Code generieren" HorizontalAlignment="Left"/>
+                <MenuItem Header="Code generieren" InputGestureText="Strg+G" Command="{Binding GenerateCodeCommand, Mode=OneWay, Source={StaticResource myView}}" HorizontalAlignment="Left"/>
             </MenuItem>
         </Menu>
         <Canvas HorizontalAlignment="Left" Height="278" Margin="0,22,0,0" VerticalAlignment="Top" Width="300"/>
