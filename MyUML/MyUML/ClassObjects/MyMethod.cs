@@ -8,23 +8,31 @@ namespace MyUML.ClassObjects
 {
     class MyMethod
     {
-        String name;
-        String returnType;
-        List<String[]> parameter;
+        private  String name;
+        private String returnType;
+        private List<String[]> parameter;
 
-        MyMethod() { }
-
-        MyMethod(String name)
-        {
-            this.name = name;
+        public MyMethod() {
+            parameter = new List<String[]>();
         }
 
-        MyMethod(String name, String returnType)
+        
+        public String Name
         {
-            this.name = name;
-            this.returnType = returnType;
+            get { return name; }
+            set { name = value; }
+        }
+        public String ReturnType
+        {
+            get { return returnType; }
+            set { returnType = value; }
         }
 
+        public List<String[]> Parameter
+        {
+            get { return parameter; }
+            set { parameter = value; }
+        }
         public void addParameter(String type, String name)
         {
             String[] param = new String[2];

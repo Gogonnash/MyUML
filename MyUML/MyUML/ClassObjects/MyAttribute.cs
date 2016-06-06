@@ -6,17 +6,31 @@ using System.Threading.Tasks;
 
 namespace MyUML.ClassObjects
 {
+    //hier Enums?
     class MyAttribute
     {
-        String name;
-        String type;
+        private String name;
+        private  String type;
 
-        MyAttribute() { }
+       // MyAttribute() { }
 
-        MyAttribute(String name, String type)
+       /* MyAttribute(String name, String type)
         {
             this.name = name;
             this.type = type;
+        }*/
+
+        public String Name
+        {
+            get { return name; }
+            set { name = value; }
         }
+        public String Type
+        {
+            get { return type; }
+            set { type = value; }
+        }
+
+
     }
 }

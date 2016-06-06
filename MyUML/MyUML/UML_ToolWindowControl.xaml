@@ -1,16 +1,15 @@
-﻿<UserControl x:Class="MyUML.UML_ToolWindowControl"
+﻿<UserControl
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             Background="{DynamicResource VsBrush.Window}"
-             Foreground="{DynamicResource VsBrush.WindowText}"
+             xmlns:view="clr-namespace:MyUML.ViewModel"
+             xmlns:ClassObjects="clr-namespace:MyUML.ClassObjects" x:Class="MyUML.UML_ToolWindowControl"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
-             xmlns:view="clr-namespace:MyUML.ViewModel"
-             Name="MyToolWindow">
+             x:Name="MyToolWindow">
     <UserControl.Resources>
-        <view:UMLViewModel x:Key="myView"/>
+        <view:UMLCollectionViewModel x:Key="myView"/>
     </UserControl.Resources>
     <Grid>
         <Menu x:Name="menu" Height="22" VerticalAlignment="Top">
@@ -28,20 +27,55 @@
                 <MenuItem Header="Code generieren" InputGestureText="Strg+G" Command="{Binding GenerateCodeCommand, Mode=OneWay, Source={StaticResource myView}}" HorizontalAlignment="Left"/>
             </MenuItem>
         </Menu>
-        <Canvas HorizontalAlignment="Left" Height="278" Margin="0,22,0,0" VerticalAlignment="Top" Width="300">
-            <ItemsControl>
+        <Canvas  HorizontalAlignment="Left" Height="278" Margin="0,22,0,0" VerticalAlignment="Top" Width="300" Background="White">
+            <ItemsControl  ItemsSource="{StaticResource myView}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel>
-                            <Rectangle Width="20" Height="20">
-                            </Rectangle>
-                            <TextBlock Text="Klasse"/>
-                            <TextBlock Text="{Binding Path=ClassName}"/>
-                            
-                        </StackPanel>
-                            
+                        <Border BorderThickness="1" CornerRadius="3" VerticalAlignment="Top" BorderBrush="Black">
+                            <StackPanel Margin="5">
+                                <TextBlock Text="{Binding ClassName}"/>
+                                <Rectangle Stroke="Black" Width =" Auto"/>
+                                <TextBlock Text="Attributes:"/>
+                                <ListBox ItemsSource="{Binding Attributes}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock><Run Text="{Binding Name}"/><Run Text=" "/><Run Text=" : "/><Run Text=" "/><Run Text="{Binding Type}"/></TextBlock>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                <Rectangle Stroke="Black" Width =" Auto"/>
+                                <TextBlock Text="Methods:"/>
+                                <ListBox ItemsSource="{Binding Methods}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock><Run Text="{Binding Name}"/><Run Text=" "/><Run Text=" : "/><Run Text=" "/><Run Text="{Binding ReturnType}"/><Run Text=" "/><InlineUIContainer>
+													<ListBox ItemsSource="{Binding Parameter}" BorderThickness="0" VerticalAlignment="Bottom" >
+														<ListBox.ItemTemplate >
+                                                            <DataTemplate >
+                                                                <!--Here you bind the array-->
+                                                                <ItemsControl ItemsSource="{Binding}" >
+                                                                    <ItemsControl.ItemsPanel >
+                                                                        <ItemsPanelTemplate>
+                                                                            <StackPanel Orientation="Horizontal" />
+                                                                        </ItemsPanelTemplate>
+                                                                    </ItemsControl.ItemsPanel>
+                                                                    <ItemsControl.ItemTemplate>
+                                                                        <!--Here you bind the value of each string-->
+                                                                        <DataTemplate>
+                                                                            <TextBlock Text="{Binding}" Margin="5,0"/>
+                                                                        </DataTemplate>
+                                                                    </ItemsControl.ItemTemplate>
+                                                                </ItemsControl>
+                                                            </DataTemplate>
+                                                        </ListBox.ItemTemplate>
+													</ListBox>
+												</InlineUIContainer></TextBlock>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                        </Border>
                     </DataTemplate>
-                    
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </Canvas>
