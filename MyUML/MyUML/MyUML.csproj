@@ -58,6 +58,7 @@
     <Compile Include="ClassObjects\MyMethod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Command\RelayCommand.cs" />
+    <Compile Include="ViewModel\DragCanvas.cs" />
     <Compile Include="ViewModel\UMLCollectionViewModel.cs" />
     <Compile Include="UML_ToolWindow.cs" />
     <Compile Include="UML_ToolWindowCommand.cs" />

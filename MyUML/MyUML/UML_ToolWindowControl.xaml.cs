@@ -3,23 +3,20 @@
 //     Copyright (c) Company.  All rights reserved.
 // </copyright>
 //------------------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace MyUML
 {
-    using EnvDTE;
-    using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
-    using Microsoft.CodeAnalysis.Diagnostics;
-    using Microsoft.VisualStudio.ComponentModelHost;
-    using Microsoft.VisualStudio.LanguageServices;
-    using Microsoft.VisualStudio.Shell;
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using System.Windows;
-    using System.Windows.Controls;
-
     /// <summary>
     /// Interaction logic for UML_ToolWindowControl.
     /// </summary>
@@ -33,10 +30,22 @@ namespace MyUML
             this.InitializeComponent();
         }
 
-        /// <summary>
-        /// Handles click on the button by displaying a message box.
-        /// </summary>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event args.</param>
+
+       /* #region PreviewMouseRightButtonDown
+
+        void PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // If the user right-clicks while dragging an element, assume that they want 
+            // to manipulate the z-index of the element being dragged (even if it is  
+            // behind another element at the time).
+            if (this.dragCanvas.ElementBeingDragged != null)
+                this.elementForContextMenu = this.dragCanvas.ElementBeingDragged;
+            else
+                this.elementForContextMenu =
+                    this.dragCanvas.FindCanvasChild(e.Source as DependencyObject);
+        }
+
+        #endregion // Window1_PreviewMouseRightButtonDown
+        */
     }
 }

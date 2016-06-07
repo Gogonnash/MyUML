@@ -59,9 +59,32 @@ namespace MyUML.ViewModel
                 c.addMethod("void", "MyMethod", l);
                 c.addMethod("double", "AnotherMethod", l);
                 c.addAttribute("string", "hallo");
-
                 classCol = new ClassCollection();
                 classCol.Add(c);
+
+                MyClass c2 = new MyClass();
+                c2.Name = "meineKlasse2";
+                List<String[]> l2 = new List<String[]>();
+                String[] param2 = new String[2];
+                param2[0] = "type2";
+                param2[1] = "name2";
+                l2.Add(param2);
+                c2.addMethod("void", "MyMethod2", l);
+                c2.addMethod("double", "AnotherMethod2", l);
+                c2.addAttribute("string", "welt");
+                classCol.Add(c2);
+
+
+                MyClass c3 = new MyClass();
+                c3.Name = "meineKlasse3";
+                List<String[]> l3 = new List<String[]>();
+                String[] param3 = new String[2];
+                param3[0] = "type3";
+                param3[1] = "name3";
+                l3.Add(param3);
+                c3.addMethod("void", "MyMethod3", l);
+                classCol.Add(c3);
+
                 FetchFromModels();
             }
             catch (Exception c)
