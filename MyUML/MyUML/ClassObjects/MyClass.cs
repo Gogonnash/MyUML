@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,58 @@ namespace MyUML.ClassObjects
             mMethods = new List<MyMethod>();
             mAttributes = new List<MyAttribute>();
         }
+
+        public MyClass(ClassDeclarationSyntax myclass)
+        {
+            // Listen initialisieren
+            mMethods = new List<MyMethod>();
+            mAttributes = new List<MyAttribute>();
+
+            // Klassen-Name
+            this.name = myclass.Identifier.ToString();
+
+            // Attribute
+            var attributes = myclass.ChildNodes().OfType<FieldDeclarationSyntax>();
+            if (attributes.Count<FieldDeclarationSyntax>() != 0)
+            {
+                foreach (var a in attributes)
+                {
+                    String varType = a.ChildNodes().OfType<VariableDeclarationSyntax>().First().ChildNodes().ElementAt(0).ToString();
+                    String varName = a.ChildNodes().OfType<VariableDeclarationSyntax>().First().ChildNodes().ElementAt(1).ToString();                    
+                    this.addAttribute(varType, varName);
+                }                
+            }
+
+            //Methoden
+            var methods = myclass.ChildNodes().OfType<MethodDeclarationSyntax>();
+            if (methods.Count<MethodDeclarationSyntax>() != 0)
+            {
+                foreach (var m in methods)
+                {   
+                    // Methoden-Name
+                    String methodName = m.Identifier.ToString();
+
+                    // Methoden Rückgabetyp
+                    String returnType = m.ReturnType.ToString();
+
+                    // Methoden-Parameter
+                    var methodParams = m.ParameterList.ChildNodes().OfType<ParameterSyntax>();
+                    List<String[]> paramList = new List<String[]>();
+                    if (methodParams.Count() != 0)
+                    {
+                        foreach(var p in methodParams)
+                        {
+                            String paramName = p.Identifier.ToString();
+                            String paramType = p.ChildNodes().First().ToString();
+                            paramList.Add(new String[] { paramName , paramType });
+                        }
+                    }
+                    this.addMethod(returnType, methodName, paramList);
+
+                }
+            }
+        }
+
         public String Name
         {
             get { return name; }

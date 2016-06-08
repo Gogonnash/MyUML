@@ -10,7 +10,7 @@ namespace MyUML.ClassObjects
     class MyAttribute
     {
         private String name;
-        private  String type;
+        private String type;
 
        // MyAttribute() { }
 

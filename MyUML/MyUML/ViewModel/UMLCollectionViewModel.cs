@@ -45,7 +45,7 @@ namespace MyUML.ViewModel
             generateUMLCommand = new RelayCommand(GenerateUML, ReturnTrue);
             generateCodeCommand = new RelayCommand(GenerateCode, ReturnTrue);
 
-
+            /*
             try
             {
                 //fake UML Load
@@ -91,6 +91,7 @@ namespace MyUML.ViewModel
             {
                 System.Diagnostics.Debug.Write(c.Message);
             }
+            */
         }
 
         public void FetchFromModels()
@@ -112,6 +113,9 @@ namespace MyUML.ViewModel
 
         private void GenerateUML()
         {
+            classCol = new ClassCollection();
+            FetchFromModels();
+            /*
             Microsoft.CodeAnalysis.Document doc = GetActiveDocument();
             Microsoft.CodeAnalysis.SyntaxTree syntaxTree;
             doc.TryGetSyntaxTree(out syntaxTree);
@@ -135,7 +139,9 @@ namespace MyUML.ViewModel
                 else
                     foreach (var a in attributes)
                     {
-                        output = output + a.ToString() + "\n";
+                        String varName = a.ChildNodes().OfType<VariableDeclarationSyntax>().First().ChildNodes().ElementAt(1).ToString();
+                        String varType = a.ChildNodes().OfType<VariableDeclarationSyntax>().First().ChildNodes().ElementAt(0).ToString();
+                        output = output + varName + " : " + varType +  "\n";
                     }
                 output = output + "\n";
 
@@ -147,15 +153,39 @@ namespace MyUML.ViewModel
                 else
                     foreach (var m in methods)
                     {
-                        output = output + m.Identifier + "\n";
+                        String methodName = m.Identifier.ToString();                        
+                        var methodParams = m.ParameterList.ChildNodes().OfType<ParameterSyntax>();
+                        output = output + methodName;
+                        if (methodParams.Count() != 0)
+                        {
+                            output = output + " (";
+                            var lastParam = methodParams.Last();
+                            foreach (var p in methodParams)
+                            {
+                                String paramName = p.Identifier.ToString();
+                                String paramType = p.ChildNodes().First().ToString();
+                                if (p != lastParam)
+                                    output = output + paramName + ":" + paramType + ",";
+                                else
+                                    output = output + paramName + ":" + paramType;                                                  
+
+                            }
+                            output = output + ")\n";
+                        }
+                        else
+                        {
+                            output = output + "()\n";
+                        }
+                        
                     }
                 output = output + " ____________\n\n";
 
             }
-
+            
             MessageBox.Show(
                 output,
                 "Projektname: " + doc.Project.Name);
+            */
         }
 
         private void Load()
