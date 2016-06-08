@@ -222,13 +222,13 @@ namespace MyUML.ViewModel
         /// A DependencyObject from which the search begins.
         /// </param>
         public UIElement FindCanvasChild(DependencyObject depObj)
-        {         
+        {     
             while (depObj != null)
             {
                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                System.Diagnostics.Debug.Write("FindCanvasChild  --> " + depObj.GetType() + " --> " + depObj.ToString());
+                System.Diagnostics.Debug.Write("FindCanvasChild  --> " + depObj.GetType() + " --> " + depObj.GetValue(FrameworkElement.NameProperty) as string);
                 //we get the upper <ItemsControl.ItemTemplate>
-                // --> We need to focus on the childs!!!
+                // --> We need to focus on the childs -> make item template not clickable?
                 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
@@ -237,9 +237,10 @@ namespace MyUML.ViewModel
                 // If the current object is a UIElement which is a child of the
                 // Canvas, exit the loop and return it.
                 UIElement elem = depObj as UIElement;
-                if (elem != null && base.Children.Contains(elem))
+               
+             if (elem != null && base.Children.Contains(elem))
                     break;
-
+               
                 // VisualTreeHelper works with objects of type Visual or Visual3D.
                 // If the current object is not derived from Visual or Visual3D,
                 // then use the LogicalTreeHelper to find the parent element.
@@ -270,7 +271,7 @@ namespace MyUML.ViewModel
 
             // Walk up the visual tree from the element that was clicked, 
             // looking for an element that is a direct child of the Canvas.
-            this.ElementBeingDragged = this.FindCanvasChild(e.Source as DependencyObject);
+            this.ElementBeingDragged = this.FindCanvasChild((e.Source as DependencyObject));
             if (this.ElementBeingDragged == null)
                 return;
 
@@ -358,7 +359,6 @@ namespace MyUML.ViewModel
             }
 
             #region Move Drag Element
-
             if (this.modifyLeftOffset)
                 Canvas.SetLeft(this.ElementBeingDragged, newHorizontalOffset);
             else

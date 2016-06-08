@@ -3,6 +3,7 @@
 //     Copyright (c) Company.  All rights reserved.
 // </copyright>
 //------------------------------------------------------------------------------
+using MyUML.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -28,6 +29,29 @@ namespace MyUML
         public UML_ToolWindowControl()
         {
             this.InitializeComponent();
+            generateUI();
+
+        }
+
+        private void generateUI()
+        {
+            UMLCollectionViewModel ucvm = new UMLCollectionViewModel();
+            DataContext = ucvm;
+            foreach (UMLViewModel u in ucvm  )
+            {
+                
+                Border b = new Border(); b.BorderThickness = new Thickness(1); b.Margin = new Thickness(5); b.BorderBrush = new SolidColorBrush(Colors.Black);
+                StackPanel sp = new StackPanel();
+                b.Child = sp;
+                TextBlock tb = new TextBlock();
+                Binding tb1 = new Binding("ClassName");
+                tb1.Source = u;
+                tb.SetBinding(TextBlock.TextProperty, tb1);
+                
+
+                sp.Children.Add(tb);
+                this.dragCanvas.Children.Add(b);
+            }
         }
 
 
