@@ -104,7 +104,6 @@ namespace MyUML.ViewModel
         
         }
 
-
         private void GenerateCode()
         {
             throw new NotImplementedException();

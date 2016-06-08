@@ -35,10 +35,10 @@
         <view:DragCanvas x:Name="dragCanvas"
           Grid.Row="1" 
           >
-            <ItemsControl  ItemsSource="{StaticResource myView}" >
+          <!--  <ItemsControl  ItemsSource="{StaticResource myView}" >
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderThickness="1" VerticalAlignment="Top" BorderBrush="Black" Margin="0,0,0,5" Background="White">
+                        <Border view:DragCanvas.CanBeDragged="True" Name="UMLClass" Canvas.Bottom =" 0"  Canvas.Right =" 0"  Canvas.Top =" 0"  Canvas.Left =" 10" BorderThickness="1" VerticalAlignment="Top" BorderBrush="Black" Margin="0,0,0,5" Background="White" >
                             <StackPanel >
                                 <TextBlock Margin="5" Text="{Binding ClassName}" FontSize="9"/>
                                 <Rectangle Stroke="Black" Width =" Auto"/>
@@ -61,7 +61,6 @@
 											<ListBox ItemsSource="{Binding Parameter}" BorderThickness="0" >
 												<ListBox.ItemTemplate >
                                                     <DataTemplate >
-                                                        <!--Here you bind the array-->
                                                         <ItemsControl ItemsSource="{Binding}">
                                                             <ItemsControl.ItemsPanel>
                                                                 <ItemsPanelTemplate>
@@ -69,7 +68,6 @@
                                                                 </ItemsPanelTemplate>
                                                             </ItemsControl.ItemsPanel>
                                                             <ItemsControl.ItemTemplate>
-                                                                <!--Here you bind the value of each string-->
                                                                 <DataTemplate>
                                                                      <TextBlock FontSize="9" >                                                
                                                                        <Run Text="{Binding Mode=OneWay}"/>
@@ -91,7 +89,7 @@
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            </ItemsControl> -->
         </view:DragCanvas>
     </Grid>
 </UserControl>
