@@ -31,15 +31,17 @@ namespace MyUML.ViewModel
         public RelayCommand generateUMLCommand;
         public RelayCommand generateCodeCommand;
 
-
+        private Action redrawDel;
 
         public ICommand SaveCommand { get { return saveCommand; } }
         public ICommand LoadCommand { get { return loadCommand; } }
         public ICommand GenerateUMLCommand { get { return generateUMLCommand; } }
         public ICommand GenerateCodeCommand { get { return generateCodeCommand; } }
         
-        public UMLCollectionViewModel()
+        public UMLCollectionViewModel(Action redraw)
         {
+            this.redrawDel = redraw;
+
             saveCommand = new RelayCommand(Save, ReturnTrue);
             loadCommand = new RelayCommand(Load, ReturnTrue);
             generateUMLCommand = new RelayCommand(GenerateUML, ReturnTrue);
@@ -114,6 +116,7 @@ namespace MyUML.ViewModel
         {
             classCol = new ClassCollection();
             FetchFromModels();
+            this.redrawDel();
             /*
             Microsoft.CodeAnalysis.Document doc = GetActiveDocument();
             Microsoft.CodeAnalysis.SyntaxTree syntaxTree;

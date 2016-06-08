@@ -24,20 +24,23 @@ namespace MyUML
     /// </summary>
     public partial class UML_ToolWindowControl : UserControl
     {
+
+        UMLCollectionViewModel ucvm;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UML_ToolWindowControl"/> class.
         /// </summary>
         public UML_ToolWindowControl()
         {
             this.InitializeComponent();
-            generateUI();
+            //ucvm = new UMLCollectionViewModel(generateUI);
+            //generateUI();
 
         }
 
-        private void generateUI()
+        public void generateUI()
         {
             double Left = 0; double Top = 0; double BiggestHeight = 0;
-            UMLCollectionViewModel ucvm = new UMLCollectionViewModel();
             DataContext = ucvm;
             foreach (UMLViewModel u in ucvm  )
             {             
