@@ -18,7 +18,6 @@ namespace MyUML.ViewModel
 
     class DragCanvas : Canvas
     {
-
         #region Data
 
         // Stores a reference to the UIElement currently being dragged by the user.

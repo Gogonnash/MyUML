@@ -33,9 +33,9 @@ namespace MyUML
         public UML_ToolWindowControl()
         {
             this.InitializeComponent();
-            //ucvm = new UMLCollectionViewModel(generateUI);
-            //generateUI();
-
+            ucvm = this.FindResource("myView") as UMLCollectionViewModel;
+            if(ucvm != null)
+            this.ucvm.RedrawDel = this.generateUI;
         }
 
         public void generateUI()
@@ -115,13 +115,19 @@ namespace MyUML
                 sp.Children.Add(MethodListBox);
 
                 this.dragCanvas.Children.Add(b);
+
+                //get actual size
+                //System.Diagnostics.Debug.Write(b.ActualWidth + " " + sp.ActualWidth + " "+ ClassName.ActualWidth + " " +AttributeListBox.ActualWidth + "  " +dragCanvas.ActualWidth    );
+                
+                int generalSize = 100;
                 Canvas.SetLeft(b as UIElement, Left);
                 Canvas.SetTop(b as UIElement, Top);
-                Left += b.ActualWidth;
+                Left += generalSize;
                 if (b.ActualHeight > BiggestHeight)
                     BiggestHeight = Height;
                 if(Left>this.ActualWidth)
-                { Top += BiggestHeight;
+                {
+                    Top += generalSize;
                     Left = 0;
                 }
             }

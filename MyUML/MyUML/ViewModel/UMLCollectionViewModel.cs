@@ -38,10 +38,8 @@ namespace MyUML.ViewModel
         public ICommand GenerateUMLCommand { get { return generateUMLCommand; } }
         public ICommand GenerateCodeCommand { get { return generateCodeCommand; } }
         
-        public UMLCollectionViewModel(Action redraw)
+        public UMLCollectionViewModel()
         {
-            this.redrawDel = redraw;
-
             saveCommand = new RelayCommand(Save, ReturnTrue);
             loadCommand = new RelayCommand(Load, ReturnTrue);
             generateUMLCommand = new RelayCommand(GenerateUML, ReturnTrue);
@@ -95,6 +93,12 @@ namespace MyUML.ViewModel
             }
             */
         }
+        public Action RedrawDel
+        {
+            set {
+                if(value!= null) this.redrawDel = value; }
+            get { return this.redrawDel; }
+        }
 
         public void FetchFromModels()
         { //A Bookviewmodel for each book is added
@@ -116,7 +120,7 @@ namespace MyUML.ViewModel
         {
             classCol = new ClassCollection();
             FetchFromModels();
-            this.redrawDel();
+            this.RedrawDel();
             /*
             Microsoft.CodeAnalysis.Document doc = GetActiveDocument();
             Microsoft.CodeAnalysis.SyntaxTree syntaxTree;
