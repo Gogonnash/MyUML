@@ -19,12 +19,12 @@
         </Grid.RowDefinitions>
         <Menu x:Name="menu" Height="22" VerticalAlignment="Top">
             <MenuItem Header="Datei">
-                <MenuItem Header="Speichern"  InputGestureText="Strg+S" Command="{Binding SaveCommand, Mode=OneWay, Source={StaticResource myView}}" HorizontalAlignment="Left" />
+                <MenuItem Header="Speichern"  InputGestureText="Strg+S"  HorizontalAlignment="Left" />
                 <MenuItem Header="Speichern unter..." HorizontalAlignment="Left" InputGestureText="Strg+Umschalt+S"/>
             </MenuItem>
             <MenuItem Header="UML">
                 <MenuItem Header="UML importieren" InputGestureText="Strg+I" Command="{Binding LoadCommand, Mode=OneWay, Source={StaticResource myView}}" HorizontalAlignment="Left"/>
-                <MenuItem Header="UML exportieren" HorizontalAlignment="Left"/>
+                <MenuItem Header="UML exportieren" HorizontalAlignment="Left" Command="{Binding SaveCommand, Mode=OneWay, Source={StaticResource myView}}" />
                 <Separator/>
                 <MenuItem Header="UML generieren"  InputGestureText="Strg+U" Command="{Binding GenerateUMLCommand, Mode=OneWay, Source={StaticResource myView}}" HorizontalAlignment="Left"/>
             </MenuItem>

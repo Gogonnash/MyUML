@@ -18,6 +18,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
 using MyUML.ClassObjects;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace MyUML.ViewModel
 {
@@ -32,6 +34,7 @@ namespace MyUML.ViewModel
         public RelayCommand generateCodeCommand;
 
         private Action redrawDel;
+        private string NameToSave = "MyUML";
 
         public ICommand SaveCommand { get { return saveCommand; } }
         public ICommand LoadCommand { get { return loadCommand; } }
@@ -44,54 +47,6 @@ namespace MyUML.ViewModel
             loadCommand = new RelayCommand(Load, ReturnTrue);
             generateUMLCommand = new RelayCommand(GenerateUML, ReturnTrue);
             generateCodeCommand = new RelayCommand(GenerateCode, ReturnTrue);
-
-            /*
-            try
-            {
-                //fake UML Load
-                MyClass c = new MyClass();
-                c.Name = "meineKlasse";
-                List<String[]> l = new List<String[]>();
-                String[] param = new String[2];
-                param[0] = "type1";
-                param[1] = "name1";
-                l.Add(param);
-                c.addMethod("void", "MyMethod", l);
-                c.addMethod("double", "AnotherMethod", l);
-                c.addAttribute("string", "hallo");
-                classCol = new ClassCollection();
-                classCol.Add(c);
-
-                MyClass c2 = new MyClass();
-                c2.Name = "meineKlasse2";
-                List<String[]> l2 = new List<String[]>();
-                String[] param2 = new String[2];
-                param2[0] = "type2";
-                param2[1] = "name2";
-                l2.Add(param2);
-                c2.addMethod("void", "MyMethod2", l);
-                c2.addMethod("double", "AnotherMethod2", l);
-                c2.addAttribute("string", "welt");
-                classCol.Add(c2);
-
-
-                MyClass c3 = new MyClass();
-                c3.Name = "meineKlasse3";
-                List<String[]> l3 = new List<String[]>();
-                String[] param3 = new String[2];
-                param3[0] = "type3";
-                param3[1] = "name3";
-                l3.Add(param3);
-                c3.addMethod("void", "MyMethod3", l);
-                classCol.Add(c3);
-
-                FetchFromModels();
-            }
-            catch (Exception c)
-            {
-                System.Diagnostics.Debug.Write(c.Message);
-            }
-            */
         }
         public Action RedrawDel
         {
@@ -196,13 +151,35 @@ namespace MyUML.ViewModel
 
         private void Load()
         {
-            throw new NotImplementedException();
+            //in this Case: 
+            //C:\Users\...\Documents\Visual Studio 2012\Projects\Book-Manager-Projekt\Book-Manager\bin\Debug
+            string dir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string path = dir + @"\" + NameToSave;
+            if (File.Exists(path))
+            {
+                FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+                BinaryFormatter bf = new BinaryFormatter();
+                ClassCollection cc = (ClassCollection)bf.Deserialize(fs);
+                fs.Close();
+                classCol.Clear();
+                foreach (MyClass c in cc)
+                {
+                    classCol.Add(c);
+                }
+                FetchFromModels();
+                this.RedrawDel();
+            }
 
-         }
+        }
 
         private void Save()
         {
-            throw new NotImplementedException();
+            string dir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string path = dir + @"\"+ NameToSave;
+            FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None);
+            BinaryFormatter bf = new BinaryFormatter();
+            bf.Serialize(fs, classCol);
+            fs.Close();
         }
 
         public Boolean ReturnTrue()

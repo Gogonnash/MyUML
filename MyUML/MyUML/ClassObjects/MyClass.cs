@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyUML.ClassObjects
 {
+    [Serializable]
     class MyClass
     {
         private String name;

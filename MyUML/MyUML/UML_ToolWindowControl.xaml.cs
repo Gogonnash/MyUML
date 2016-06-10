@@ -40,6 +40,7 @@ namespace MyUML
 
         public void generateUI()
         {
+            this.dragCanvas.Children.Clear();
             double Left = 0; double Top = 0; double BiggestHeight = 0;
             DataContext = ucvm;
             foreach (UMLViewModel u in ucvm  )

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyUML.ClassObjects
 {
+    [Serializable]
     //hier Enums?
     class MyAttribute
     {
