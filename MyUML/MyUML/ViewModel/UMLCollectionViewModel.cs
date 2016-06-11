@@ -20,6 +20,8 @@ using System.Windows.Controls;
 using MyUML.ClassObjects;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Windows.Forms;
+using System.Windows.Media.Imaging;
 
 namespace MyUML.ViewModel
 {
@@ -27,24 +29,29 @@ namespace MyUML.ViewModel
     {
         public ClassCollection classCol;
 
-        public RelayCommand saveCommand;
-        public RelayCommand loadCommand;
+        public RelayCommand saveUMLCommand;
+        public RelayCommand loadUMLCommand;
+        public RelayCommand saveCanvasAsImage;
 
         public RelayCommand generateUMLCommand;
         public RelayCommand generateCodeCommand;
 
         private Action redrawDel;
-        private string NameToSave = "MyUML";
+        private Func<BitmapEncoder> getCanvasImage;
 
-        public ICommand SaveCommand { get { return saveCommand; } }
-        public ICommand LoadCommand { get { return loadCommand; } }
+        public ICommand SaveUMLCommand { get { return saveUMLCommand; } }
+        public ICommand LoadUMLCommand { get { return loadUMLCommand; } }
+        public ICommand SaveCanvasAsImage { get { return saveCanvasAsImage; } }
+
         public ICommand GenerateUMLCommand { get { return generateUMLCommand; } }
         public ICommand GenerateCodeCommand { get { return generateCodeCommand; } }
         
         public UMLCollectionViewModel()
         {
-            saveCommand = new RelayCommand(Save, ReturnTrue);
-            loadCommand = new RelayCommand(Load, ReturnTrue);
+            saveUMLCommand = new RelayCommand(SaveUML, ReturnTrue);
+            loadUMLCommand = new RelayCommand(LoadUML, ReturnTrue);
+            saveCanvasAsImage = new RelayCommand(SaveCanvasImage, ReturnTrue);
+
             generateUMLCommand = new RelayCommand(GenerateUML, ReturnTrue);
             generateCodeCommand = new RelayCommand(GenerateCode, ReturnTrue);
         }
@@ -53,6 +60,14 @@ namespace MyUML.ViewModel
             set {
                 if(value!= null) this.redrawDel = value; }
             get { return this.redrawDel; }
+        }
+        public Func<BitmapEncoder> GetCanvasImage
+        {
+            set
+            {
+                if (value != null) this.getCanvasImage = value;
+            }
+            get { return this.getCanvasImage; }
         }
 
         public void FetchFromModels()
@@ -149,16 +164,21 @@ namespace MyUML.ViewModel
             */
         }
 
-        private void Load()
+        private void LoadUML()
         {
-            //in this Case: 
-            //C:\Users\...\Documents\Visual Studio 2012\Projects\Book-Manager-Projekt\Book-Manager\bin\Debug
-            string dir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            string path = dir + @"\" + NameToSave;
-            if (File.Exists(path))
-            {
-                FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            // Displays an OpenFileDialog so the user can select a Cursor.
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.Filter = "All files (*.*)|*.*";
+            openFileDialog1.Title = "Select a UML File";
+
+            // Show the Dialog.
+            // If the user clicked OK in the dialog and
+            // a .CUR file was selected, open it.
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            { 
+                FileStream fs = (FileStream)openFileDialog1.OpenFile();
                 BinaryFormatter bf = new BinaryFormatter();
+                bf.AssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple;
                 ClassCollection cc = (ClassCollection)bf.Deserialize(fs);
                 fs.Close();
                 classCol.Clear();
@@ -172,15 +192,42 @@ namespace MyUML.ViewModel
 
         }
 
-        private void Save()
+        private void SaveUML()
         {
-            string dir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            string path = dir + @"\"+ NameToSave;
-            FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None);
-            BinaryFormatter bf = new BinaryFormatter();
-            bf.Serialize(fs, classCol);
-            fs.Close();
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Filter = "All files (*.*)|*.*";
+            saveFileDialog1.FilterIndex = 2;
+            saveFileDialog1.Title = "Save your UML";
+            saveFileDialog1.RestoreDirectory = true;
+            saveFileDialog1.ShowDialog();
+            if (saveFileDialog1.FileName != "")
+            {
+                FileStream fs = (System.IO.FileStream)saveFileDialog1.OpenFile();
+                BinaryFormatter bf = new BinaryFormatter();
+                bf.AssemblyFormat =   System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple;
+                bf.Serialize(fs, classCol);
+                fs.Close();
+            }
         }
+
+       private void SaveCanvasImage()
+        {
+            BitmapEncoder pngEncoder = this.GetCanvasImage();
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Filter = "PNG Image|*.png";
+            saveFileDialog1.Title = "Save as Image File";
+            saveFileDialog1.ShowDialog();
+
+            // If the file name is not an empty string open it for saving.
+            if (saveFileDialog1.FileName != "")
+            {
+                // Saves the Image via a FileStream created by the OpenFile method.
+                System.IO.FileStream fs =  (System.IO.FileStream)saveFileDialog1.OpenFile();
+                pngEncoder.Save(fs);
+                fs.Close();
+            }
+        }
+
 
         public Boolean ReturnTrue()
         { //Commands can always be done

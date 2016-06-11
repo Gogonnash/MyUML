@@ -22,7 +22,7 @@ namespace MyUML
     /// <summary>
     /// Interaction logic for UML_ToolWindowControl.
     /// </summary>
-    public partial class UML_ToolWindowControl : UserControl
+    public partial class UML_ToolWindowControl : UserControl// ContentControl  needed to clear Canvas???
     {
 
         UMLCollectionViewModel ucvm;
@@ -36,16 +36,25 @@ namespace MyUML
             ucvm = this.FindResource("myView") as UMLCollectionViewModel;
             if(ucvm != null)
             this.ucvm.RedrawDel = this.generateUI;
+            this.ucvm.GetCanvasImage = this.GetCanvasImage;
         }
 
-        public void generateUI()
+        private void generateUI()
         {
             this.dragCanvas.Children.Clear();
-            double Left = 0; double Top = 0; double BiggestHeight = 0;
+            dragCanvas.UpdateLayout();
+
+            double Left = 5; double Top = 5; double BiggestHeight = 0;
             DataContext = ucvm;
+            
             foreach (UMLViewModel u in ucvm  )
-            {             
-                Border b = new Border(); b.Background = new SolidColorBrush(Colors.White); b.BorderThickness = new Thickness(1); b.Margin = new Thickness(5); b.BorderBrush = new SolidColorBrush(Colors.Black);
+            {  
+                Border b = new Border();
+                    b.Background = new SolidColorBrush(Colors.White);
+                    b.BorderThickness = new Thickness(1);
+                    b.Margin = new Thickness(5);
+                    b.BorderBrush = new SolidColorBrush(Colors.Black);
+                    b.Width = Double.NaN; b.Height = Double.NaN;
                 StackPanel sp = new StackPanel();
                 b.Child = sp;
                 TextBlock ClassName = new TextBlock();
@@ -114,42 +123,53 @@ namespace MyUML
                     
                 }
                 sp.Children.Add(MethodListBox);
-
                 this.dragCanvas.Children.Add(b);
 
                 //get actual size
-                //System.Diagnostics.Debug.Write(b.ActualWidth + " " + sp.ActualWidth + " "+ ClassName.ActualWidth + " " +AttributeListBox.ActualWidth + "  " +dragCanvas.ActualWidth    );
-                
-                int generalSize = 100;
-                Canvas.SetLeft(b as UIElement, Left);
-                Canvas.SetTop(b as UIElement, Top);
-                Left += generalSize;
+                b.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                b.Arrange(new Rect(0, 0, b.DesiredSize.Width, b.DesiredSize.Height));
+                System.Diagnostics.Debug.Write( "  " +b.ActualWidth + " " + b.ActualHeight);
+                //Arrange
+                Canvas.SetLeft(b, Left);
+                Canvas.SetTop(b, Top);
+                Left += (b.ActualWidth + 10.0);
                 if (b.ActualHeight > BiggestHeight)
-                    BiggestHeight = Height;
-                if(Left>this.ActualWidth)
-                {
-                    Top += generalSize;
-                    Left = 0;
-                }
+                { BiggestHeight = (b.ActualHeight + 10.0); }
+                if (Left > dragCanvas.ActualWidth)
+                { Top += BiggestHeight; Left = 0; }
             }
         }
 
-
-       /* #region PreviewMouseRightButtonDown
-
-        void PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private BitmapEncoder GetCanvasImage()
         {
-            // If the user right-clicks while dragging an element, assume that they want 
-            // to manipulate the z-index of the element being dragged (even if it is  
-            // behind another element at the time).
-            if (this.dragCanvas.ElementBeingDragged != null)
-                this.elementForContextMenu = this.dragCanvas.ElementBeingDragged;
-            else
-                this.elementForContextMenu =
-                    this.dragCanvas.FindCanvasChild(e.Source as DependencyObject);
+            RenderTargetBitmap rtb = new RenderTargetBitmap((int)dragCanvas.RenderSize.Width, (int)dragCanvas.RenderSize.Height, 96d, 96d, System.Windows.Media.PixelFormats.Default);
+            rtb.Render(dragCanvas);
+            BitmapEncoder pngEncoder = new PngBitmapEncoder();
+            pngEncoder.Frames.Add(System.Windows.Media.Imaging.BitmapFrame.Create(rtb));
+            return pngEncoder;
         }
 
-        #endregion // Window1_PreviewMouseRightButtonDown
-        */
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            dragCanvas.Children.Clear();
+            dragCanvas.UpdateLayout();
+        }
+
+        /* #region PreviewMouseRightButtonDown
+
+         void PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+         {
+             // If the user right-clicks while dragging an element, assume that they want 
+             // to manipulate the z-index of the element being dragged (even if it is  
+             // behind another element at the time).
+             if (this.dragCanvas.ElementBeingDragged != null)
+                 this.elementForContextMenu = this.dragCanvas.ElementBeingDragged;
+             else
+                 this.elementForContextMenu =
+                     this.dragCanvas.FindCanvasChild(e.Source as DependencyObject);
+         }
+
+         #endregion // Window1_PreviewMouseRightButtonDown
+         */
     }
 }
