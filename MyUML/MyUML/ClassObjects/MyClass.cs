@@ -36,7 +36,12 @@ namespace MyUML.ClassObjects
                 foreach (var a in attributes)
                 {
                     String varType = a.ChildNodes().OfType<VariableDeclarationSyntax>().First().ChildNodes().ElementAt(0).ToString();
-                    String varName = a.ChildNodes().OfType<VariableDeclarationSyntax>().First().ChildNodes().ElementAt(1).ToString();                    
+                    String varName = a.ChildNodes().OfType<VariableDeclarationSyntax>().First().ChildNodes().ElementAt(1).ToString();
+                    // Falls Variable initalisiert wurde, alles ab dem "="-Zeichen entfernen
+                    if (varName.IndexOf("=")!= -1)
+                    {
+                        varName = varName.Remove(varName.IndexOf("="));
+                    }
                     this.addAttribute(varType, varName);
                 }                
             }
