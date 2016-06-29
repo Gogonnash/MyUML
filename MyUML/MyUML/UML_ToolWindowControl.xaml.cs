@@ -63,6 +63,13 @@ namespace MyUML
                 foreach (MyAttribute ma in u.Attributes)
                 {
                     TextBlock Attribute = new TextBlock();
+                    Run AttributeMod = new Run();
+                    Run Space = new Run(" ");
+                    Binding AttributeModBinding = new Binding("Modifier");
+                    AttributeModBinding.Source = ma;
+                    AttributeMod.SetBinding(Run.TextProperty, AttributeModBinding);
+                    Attribute.Inlines.Add(AttributeMod);
+                    Attribute.Inlines.Add(Space);
                     Run AttributeName = new Run();                                   
                     Binding AttributeNameBinding = new Binding("Name");
                     AttributeNameBinding.Source = ma;
@@ -84,12 +91,18 @@ namespace MyUML
                 foreach (MyMethod mm in u.Methods)
                 {
                     TextBlock Method = new TextBlock();
+                    Run MethodMod = new Run();
+                    Run Space = new Run("  ");
+                    Binding MethodModBinding = new Binding("Modifier");
+                    MethodModBinding.Source = mm;
+                    MethodMod.SetBinding(Run.TextProperty, MethodModBinding);
+                    Method.Inlines.Add(MethodMod);
+                    Method.Inlines.Add(Space);
                     Run MethodType = new Run();
                     Binding MethodTypeBinding = new Binding("ReturnType");
                     MethodTypeBinding.Source = mm;
                     MethodType.SetBinding(Run.TextProperty, MethodTypeBinding);
                     Method.Inlines.Add(MethodType);
-                    Run Space = new Run(" ");
                     Method.Inlines.Add(Space);
                     Run MethodName = new Run();
                     Binding MethodeNameBinding = new Binding("Name");

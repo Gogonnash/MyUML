@@ -12,6 +12,7 @@ namespace MyUML.ClassObjects
     {
         private String name;
         private String type;
+        private char modifier;
 
        // MyAttribute() { }
 
@@ -32,6 +33,11 @@ namespace MyUML.ClassObjects
             set { type = value; }
         }
 
+        public char Modifier
+        {
+            get { return modifier; }
+            set { modifier = value; }
+        }
 
     }
 }

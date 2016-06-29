@@ -12,6 +12,7 @@ namespace MyUML.ClassObjects
         private  String name;
         private String returnType;
         private List<String[]> parameter;
+        private char modifier;
 
         public MyMethod() {
             parameter = new List<String[]>();
@@ -34,6 +35,13 @@ namespace MyUML.ClassObjects
             get { return parameter; }
             set { parameter = value; }
         }
+
+        public char Modifier
+        {
+            get { return modifier;  }
+            set { modifier = value; }
+        }
+
         public void addParameter(String type, String name)
         {
             String[] param = new String[2];

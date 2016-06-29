@@ -35,6 +35,21 @@ namespace MyUML.ClassObjects
             {
                 foreach (var a in attributes)
                 {
+                    // Standard: protected
+                    char modifier = '#';
+                    var modifierList = a.Modifiers;
+                    foreach (var mod in modifierList)
+                    {
+                        if (mod.ToString().ToLower().Equals("private"))
+                        {
+                            modifier = '-';
+                        }
+                        if (mod.ToString().ToLower().Equals("public"))
+                        {
+                            modifier = '+';
+                        }
+                    }
+
                     String varType = a.ChildNodes().OfType<VariableDeclarationSyntax>().First().ChildNodes().ElementAt(0).ToString();
                     String varName = a.ChildNodes().OfType<VariableDeclarationSyntax>().First().ChildNodes().ElementAt(1).ToString();
                     // Falls Variable initalisiert wurde, alles ab dem "="-Zeichen entfernen
@@ -42,7 +57,7 @@ namespace MyUML.ClassObjects
                     {
                         varName = varName.Remove(varName.IndexOf("="));
                     }
-                    this.addAttribute(varType, varName);
+                    this.addAttribute(modifier, varType, varName);
                 }                
             }
 
@@ -51,7 +66,22 @@ namespace MyUML.ClassObjects
             if (methods.Count<MethodDeclarationSyntax>() != 0)
             {
                 foreach (var m in methods)
-                {   
+                {
+                    // Standard: protected
+                    char modifier = '#';
+                    var modifierList = m.Modifiers;
+                    foreach (var mod in modifierList)
+                    {
+                        if (mod.ToString().ToLower().Equals("private"))
+                        {
+                            modifier = '-';
+                        }
+                        if (mod.ToString().ToLower().Equals("public"))
+                        {
+                            modifier = '+';
+                        }
+                    }
+
                     // Methoden-Name
                     String methodName = m.Identifier.ToString();
 
@@ -70,7 +100,7 @@ namespace MyUML.ClassObjects
                             paramList.Add(new String[] { paramName , paramType });
                         }
                     }
-                    this.addMethod(returnType, methodName, paramList);
+                    this.addMethod(modifier, returnType, methodName, paramList);
 
                 }
             }
@@ -94,19 +124,21 @@ namespace MyUML.ClassObjects
             set { mAttributes = value; }
         }
 
-        public void addAttribute(String type, String name)
+        public void addAttribute(char modifier, String type, String name)
         {
             MyAttribute a = new MyAttribute();
             a.Name = name;
             a.Type = type;
+            a.Modifier = modifier;
             mAttributes.Add(a);
         }
-        public void addMethod(String type, String name, List<String[]> param)
+        public void addMethod(char modifier, String type, String name, List<String[]> param)
         {
             MyMethod m = new MyMethod();
             m.Name = name;
             m.ReturnType = type;
             m.Parameter = param;
+            m.Modifier = modifier;
             mMethods.Add(m);
         }
     }
